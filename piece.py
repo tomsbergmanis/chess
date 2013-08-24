@@ -39,9 +39,10 @@ class Pawn(object):
 
 
 class Rook(object):
-		self.piece = piece
+
 	def __init__(self, piece):
-	
+		self.piece = piece
+
 	def move_options(self):
 		moves = []
 		for i in range(1,9):
@@ -51,3 +52,7 @@ class Rook(object):
 			moves.append((i, self.piece.pos_y))
 			
 		return moves
+		
+
+class Bishop(object):
+	
