@@ -37,3 +37,17 @@ class Pawn(object):
 			
 		return moves
 
+
+class Rook(object):
+		self.piece = piece
+	def __init__(self, piece):
+	
+	def move_options(self):
+		moves = []
+		for i in range(1,9):
+			moves.append((self.piece.pos_x, i))
+			
+		for i in range(1,9):
+			moves.append((i, self.piece.pos_y))
+			
+		return moves
