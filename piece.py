@@ -1,3 +1,8 @@
+UP = 1
+DOWN = -1
+RIGHT = 1
+LEFT = -1
+
 class ChessPiece(object):
 
 	def __init__(self, x, y):
@@ -16,9 +21,9 @@ class Pawn(object):
 	def move_options(self):
 		moves = []
 		if self.initial_y == 2:
-			dir = 1
+			dir = UP
 		else:
-			dir = -1
+			dir = DOWN
 			
 		# move 1 forth
 		moves.append((self.piece.pos_x,self.piece.pos_y + 1*dir))
@@ -56,3 +61,28 @@ class Rook(object):
 
 class Bishop(object):
 	
+	def __init__(self, piece):
+		self.piece = piece
+	
+	def move_options(self):
+		moves = []
+
+		moves.extend(self.__extend_diognal__(UP, RIGHT))
+		moves.extend(self.__extend_diognal__(DOWN, LEFT))
+		
+		moves.extend(self.__extend_diognal__(UP, LEFT))
+		moves.extend(self.__extend_diognal__(DOWN, RIGHT))
+
+		return moves
+		
+	def __extend_diognal__(self,x_dir, y_dir):
+		squares = []
+		x = self.piece.pos_x + x_dir
+		y = self.piece.pos_y + y_dir
+		
+		while x < 9 and y < 9 and x > 0 and y > 0:
+			squares.append((x,y))
+			x = x + x_dir
+			y = y + y_dir
+
+		return squares
