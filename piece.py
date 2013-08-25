@@ -17,10 +17,9 @@ class ChessPiece(object):
 	def move_options(self):
 		pass
 	
-class Pawn(object):
+class Pawn(ChessPiece):
 	
-	def __init__(self, piece, initial_y):
-		self.piece = piece	
+	def __init__(self, initial_y):
 		self.initial_y = initial_y
 		
 	def move_options(self):
@@ -31,43 +30,38 @@ class Pawn(object):
 			dir = DOWN
 			
 		# move 1 forth
-		moves.append((self.piece.pos_x,self.piece.pos_y + 1*dir))
+		moves.append((self.pos_x,self.pos_y + 1*dir))
 		# move 2 forth from initial pos
 		
-		if self.piece.pos_y == self.initial_y:
-			moves.append((self.piece.pos_x,self.piece.pos_y + 2*dir))
+		if self.pos_y == self.initial_y:
+			moves.append((self.pos_x,self.pos_y + 2*dir))
 		
 		# take piece on the right
-		if self.piece.pos_x + 1 <  BMAX:
-			moves.append((self.piece.pos_x + 1, self.piece.pos_y + 1*dir))
+		if self.pos_x + 1 <  BMAX:
+			moves.append((self.pos_x + 1, self.pos_y + 1*dir))
 			
 		# take piece on the left
-		if self.piece.pos_x - 1 < BMIN:
-			moves.append((self.piece.pos_x - 1, self.piece.pos_y + 1*dir))
+		if self.pos_x - 1 < BMIN:
+			moves.append((self.pos_x - 1, self.pos_y + 1*dir))
 			
 		return moves
 
 
-class Rook(object):
-
-	def __init__(self, piece):
-		self.piece = piece
+class Rook(ChessPiece):
 
 	def move_options(self):
 		moves = []
 		for i in range(1,BMAX):
-			moves.append((self.piece.pos_x, i))
+			moves.append((self.pos_x, i))
 			
 		for i in range(1, BMAX):
-			moves.append((i, self.piece.pos_y))
+			moves.append((i, self.pos_y))
 			
 		return moves
 		
 
-class Bishop(object):
-	
-	def __init__(self, piece):
-		self.piece = piece
+class Bishop(ChessPiece):
+
 	
 	def move_options(self):
 		moves = []
@@ -82,8 +76,8 @@ class Bishop(object):
 		
 	def __extend_diognal__(self, x_dir, y_dir):
 		squares = []
-		x = self.piece.pos_x + x_dir
-		y = self.piece.pos_y + y_dir
+		x = self.pos_x + x_dir
+		y = self.pos_y + y_dir
 		
 		while x <  BMAX and y < BMAX and x > BMIN and y > BMIN:
 			squares.append((x,y))
@@ -93,33 +87,29 @@ class Bishop(object):
 		return squares
 		
 
-class Knight(object):
-	
-	
-	def __init__(self, piece):
-		self.piece = piece
+class Knight(ChessPiece):
 		
 	def move_options(self):
 		"""
-		>>> Knight(ChessPiece(1,1)).move_options()
+		>>> Knight(1,1).move_options()
 		[(2, 3), (3, 2)]
 		
-		>>> Knight(ChessPiece(8,8)).move_options()
+		>>> Knight(8,8).move_options()
 		[(7, 6), (6, 7)]
 
-		>>> Knight(ChessPiece(1,8)).move_options()
+		>>> Knight(1,8).move_options()
 		[(2, 6), (3, 7)]
 		
-		>>> Knight(ChessPiece(8,1)).move_options()
+		>>> Knight(8,1).move_options()
 		[(7, 3), (6, 2)]
 		
-		>>> Knight(ChessPiece(5,5)).move_options()
+		>>> Knight(5,5).move_options()
 		[(4, 7), (6, 7), (4, 3), (6, 3), (7, 4), (7, 6), (3, 4), (3, 6)]
 		
 		"""
 		moves = []
-		x = self.piece.pos_x
-		y = self.piece.pos_y
+		x = self.pos_x
+		y = self.pos_y
 		if y + 2 < BMAX:
 			if x - 1 > BMIN:
 				moves.append((x - 1, y + 2))
