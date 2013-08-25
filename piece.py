@@ -16,6 +16,10 @@ class ChessPiece(object):
 	
 	def move_options(self):
 		pass
+		
+	def move_piece(self, x, y):
+		self.pos_x = x
+		self.pos_y = y
 	
 class Pawn(ChessPiece):
 	
@@ -54,10 +58,12 @@ class Rook(ChessPiece):
 	def move_options(self):
 		moves = []
 		for i in range(1,BMAX):
-			moves.append((self.pos_x, i))
+			if i != self.pos_y:
+				moves.append((self.pos_x, i))
 			
 		for i in range(1, BMAX):
-			moves.append((i, self.pos_y))
+			if i != self.pos_x:
+				moves.append((i, self.pos_y))
 			
 		return moves
 		
@@ -153,8 +159,9 @@ class King(ChessPiece):
 		
 	def move_options(self):
 		"""
-		>>> King(5,5).move_options()
-		[(4, 6), (6, 6), (5, 6), (4, 4), (6, 4), (5, 4), (6, 4), (6, 6), (6, 5), (4, 4), (4, 6), (4, 5)]
+		>>> King(5,5,5,1).move_options() #doctest: +NORMALIZE_WHITESPACE
+		[(4, 6), (6, 6), (5, 6), (4, 4), (6, 4), (5, 4), (6, 4), (6, 6), 
+		(6, 5), (4, 4), (4, 6), (4, 5)]
 		"""
 		moves = []
 		x = self.pos_x
@@ -201,6 +208,34 @@ class King(ChessPiece):
 			
 		return moves
 	
+	
+class Queen(ChessPiece):
+
+	def __init__(self, x, y):
+		self.pos_x = x
+		self.pos_y = y
+		self.__rook = Rook(x, y)
+		self.__bishop = Bishop(x, y)
+		
+	def move_piece(self, x, y):
+		self.pos_x = x
+		self.pos_y = y
+		self.__rook.move_piece(x, y)
+		self.__bishop.move_piece(x, y)
+		
+	def move_options(self):
+		"""
+		>>> Queen(1,1).move_options() #doctest: +NORMALIZE_WHITESPACE
+		[(1, 2), (1, 3), (1, 4), (1, 5), (1, 6), (1, 7), (1, 8), (2, 1),
+		(3, 1), (4, 1), (5, 1), (6, 1), (7, 1), (8, 1), (2, 2), (3, 3),
+		(4, 4), (5, 5), (6, 6), (7, 7), (8, 8)]
+		"""
+		moves = []
+		moves.extend(self.__rook.move_options())
+		moves.extend(self.__bishop.move_options())
+		return moves
+		
 if __name__ == "__main__":
-    import doctest
-    doctest.testmod()
+    
+	import doctest
+	doctest.testmod()
