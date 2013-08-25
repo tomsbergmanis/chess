@@ -20,6 +20,9 @@ class ChessPiece(object):
 	def move_piece(self, x, y):
 		self.pos_x = x
 		self.pos_y = y
+		
+	def __repr__(self):
+		pass
 	
 class Pawn(ChessPiece):
 	
@@ -52,6 +55,8 @@ class Pawn(ChessPiece):
 			
 		return moves
 
+		def __repr__(self):
+			return "P"
 
 class Rook(ChessPiece):
 
@@ -66,7 +71,9 @@ class Rook(ChessPiece):
 				moves.append((i, self.pos_y))
 			
 		return moves
-		
+	
+	def __repr__(self):
+		return "R"
 
 class Bishop(ChessPiece):
 
@@ -93,7 +100,10 @@ class Bishop(ChessPiece):
 			y = y + y_dir
 
 		return squares
-		
+	
+	def __repr__(self):
+		return "B"
+
 
 class Knight(ChessPiece):
 		
@@ -147,7 +157,10 @@ class Knight(ChessPiece):
 				moves.append((x - 2, y + 1))
 
 		return moves
-
+	
+	def __repr__(self):
+		return "N"
+		
 
 class King(ChessPiece):
 	
@@ -207,6 +220,10 @@ class King(ChessPiece):
 			moves.append((x - 2, y)) #Castle Queenside 
 			
 		return moves
+		
+	def __repr__(self):
+		return "K"
+
 	
 	
 class Queen(ChessPiece):
@@ -234,6 +251,10 @@ class Queen(ChessPiece):
 		moves.extend(self.__rook.move_options())
 		moves.extend(self.__bishop.move_options())
 		return moves
+
+	def __repr__(self):
+		return "Q"
+
 		
 if __name__ == "__main__":
     
