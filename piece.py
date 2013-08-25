@@ -140,6 +140,54 @@ class Knight(ChessPiece):
 
 		return moves
 
+
+class King(ChessPiece):
+	
+	def move_options(self):
+		"""
+		>>> King(5,5).move_options()
+		[(4, 6), (6, 6), (5, 6), (4, 4), (6, 4), (5, 4), (6, 4), (6, 6), (6, 5), (4, 4), (4, 6), (4, 5)]
+		"""
+		moves = []
+		x = self.pos_x
+		y = self.pos_y
+		if y + 1 < BMAX:
+			if x - 1 > BMIN:
+				moves.append((x - 1, y + 1))
+			
+			if x + 1 < BMAX:
+				moves.append((x + 1, y + 1))
+		
+			moves.append((x, y + 1))
+			
+		if y - 1 > BMIN:
+			if x - 1 > BMIN:
+				moves.append((x - 1, y - 1))
+			
+			if x + 1 < BMAX:
+				moves.append((x + 1, y - 1))		
+			
+			moves.append((x, y - 1))
+				
+		if x + 1 < BMAX:
+			if y - 1 > BMIN:
+				moves.append((x + 1, y - 1))
+			
+			if y + 1 < BMAX:
+				moves.append((x + 1, y + 1))
+		
+			moves.append((x + 1, y))
+			
+		if x - 1 > BMIN:
+			if y - 1 > BMIN:
+				moves.append((x - 1, y - 1))
+			
+			if y + 1 < BMAX:
+				moves.append((x - 1, y + 1))
+						
+			moves.append((x - 1, y))
+
+		return moves
 	
 if __name__ == "__main__":
     import doctest
