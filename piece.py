@@ -19,7 +19,9 @@ class ChessPiece(object):
 	
 class Pawn(ChessPiece):
 	
-	def __init__(self, initial_y):
+	def __init__(self, x, y, initial_y):
+		self.pos_x = x
+		self.pos_y = y
 		self.initial_y = initial_y
 		
 	def move_options(self):
@@ -143,6 +145,12 @@ class Knight(ChessPiece):
 
 class King(ChessPiece):
 	
+	def __init__(self, x, y, initial_x, initial_y):
+		self.pos_x = x
+		self.pos_y = y
+		self.initial_y = initial_y
+		self.initial_x = initial_x
+		
 	def move_options(self):
 		"""
 		>>> King(5,5).move_options()
@@ -153,40 +161,44 @@ class King(ChessPiece):
 		y = self.pos_y
 		if y + 1 < BMAX:
 			if x - 1 > BMIN:
-				moves.append((x - 1, y + 1))
+				moves.append((x - 1, y + 1))  #up left 
 			
 			if x + 1 < BMAX:
-				moves.append((x + 1, y + 1))
+				moves.append((x + 1, y + 1))  #up right 
 		
-			moves.append((x, y + 1))
+			moves.append((x, y + 1)) #up
 			
 		if y - 1 > BMIN:
 			if x - 1 > BMIN:
-				moves.append((x - 1, y - 1))
+				moves.append((x - 1, y - 1)) #down left 
 			
 			if x + 1 < BMAX:
-				moves.append((x + 1, y - 1))		
+				moves.append((x + 1, y - 1)) #down rigt 
 			
-			moves.append((x, y - 1))
+			moves.append((x, y - 1)) #down 
 				
 		if x + 1 < BMAX:
 			if y - 1 > BMIN:
-				moves.append((x + 1, y - 1))
+				moves.append((x + 1, y - 1)) #right down
 			
 			if y + 1 < BMAX:
-				moves.append((x + 1, y + 1))
+				moves.append((x + 1, y + 1)) #right up
 		
-			moves.append((x + 1, y))
+			moves.append((x + 1, y)) #right 
 			
 		if x - 1 > BMIN:
 			if y - 1 > BMIN:
-				moves.append((x - 1, y - 1))
+				moves.append((x - 1, y - 1)) #left down
 			
 			if y + 1 < BMAX:
-				moves.append((x - 1, y + 1))
+				moves.append((x - 1, y + 1)) #left up
 						
-			moves.append((x - 1, y))
+			moves.append((x - 1, y)) #left
 
+		if x == self.initial_x and y == self.initial_y: 
+			moves.append((x + 2, y)) #Castle Kingside
+			moves.append((x - 2, y)) #Castle Queenside 
+			
 		return moves
 	
 if __name__ == "__main__":
