@@ -1,3 +1,4 @@
+
 UP = 1
 DOWN = -1
 RIGHT = 1
@@ -93,11 +94,29 @@ class Bishop(object):
 		
 
 class Knight(object):
-
+	
+	
 	def __init__(self, piece):
 		self.piece = piece
 		
 	def move_options(self):
+		"""
+		>>> Knight(ChessPiece(1,1)).move_options()
+		[(2, 3), (3, 2)]
+		
+		>>> Knight(ChessPiece(8,8)).move_options()
+		[(7, 6), (6, 7)]
+
+		>>> Knight(ChessPiece(1,8)).move_options()
+		[(2, 6), (3, 7)]
+		
+		>>> Knight(ChessPiece(8,1)).move_options()
+		[(7, 3), (6, 2)]
+		
+		>>> Knight(ChessPiece(5,5)).move_options()
+		[(4, 7), (6, 7), (4, 3), (6, 3), (7, 4), (7, 6), (3, 4), (3, 6)]
+		
+		"""
 		moves = []
 		x = self.piece.pos_x
 		y = self.piece.pos_y
@@ -130,3 +149,8 @@ class Knight(object):
 				moves.append((x - 2, y + 1))
 
 		return moves
+
+	
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
