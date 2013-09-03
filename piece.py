@@ -20,9 +20,10 @@ class ChessPiece(object):
 	def move_piece(self, x, y):
 		self.pos_x = x
 		self.pos_y = y
-		
+	
 	def __repr__(self):
 		pass
+	
 	
 class Pawn(ChessPiece):
 	
@@ -55,8 +56,9 @@ class Pawn(ChessPiece):
 			
 		return moves
 
-		def __repr__(self):
-			return "P"
+	def __repr__(self):
+		return "P"
+
 
 class Rook(ChessPiece):
 
@@ -74,6 +76,7 @@ class Rook(ChessPiece):
 	
 	def __repr__(self):
 		return "R"
+
 
 class Bishop(ChessPiece):
 
