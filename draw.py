@@ -31,7 +31,7 @@ def on_click(i,j,event):
 	
 for i,row in enumerate(board):
     for j,column in enumerate(row):
-		color = "gray55" if (i+j)%2 else "white"
+		color = "white" if (i+j)%2 else "gray55"
 		if board[i][j].__repr__() == "WP":
 			L = tk.Label(root,  image=wp, bg=color)
 		elif board[i][j].__repr__() == "BP":
@@ -39,7 +39,7 @@ for i,row in enumerate(board):
 		elif board[i][j].__repr__() == "WB":
 			L = tk.Label(root,  image=wb, bg=color)
 		elif board[i][j].__repr__() == "BB":
-			L = tk.Label(root,  image=wb, bg=color)
+			L = tk.Label(root,  image=bb, bg=color)
 		elif board[i][j].__repr__() == "WN":
 			L = tk.Label(root,  image=wn, bg=color)
 		elif board[i][j].__repr__() == "BN":
@@ -58,7 +58,7 @@ for i,row in enumerate(board):
 			L = tk.Label(root,  image=bq, bg=color)
 		else:
 			L = tk.Label(root, image=empty, bg=color)
-		L.grid(row=i,column=j)
+		L.grid(row=7-i,column=j)
 		L.bind('<Button-1>',lambda e,i=i,j=j: on_click(i,j,e))
 
 root.mainloop()
