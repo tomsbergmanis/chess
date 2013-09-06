@@ -56,4 +56,10 @@ class Board():
 		self.board[6][6] = ColoredChessPiece("B", piece.Pawn(7,7,7))
 		self.board[6][7] = ColoredChessPiece("B", piece.Pawn(8,7,7))
 		
-		
+	def move_piece(self, old_i, old_j, new_i, new_j):
+		self.board[new_i][new_j] = self.board[old_i][old_j]
+		if old_i != new_i or old_j != new_j:
+			self.board[old_i][old_j] = None
+
+	def is_empty(self, i, j):
+		return self.board[i][j] == None 
