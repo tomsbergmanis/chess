@@ -66,6 +66,8 @@ class Board():
 	def is_legal_move(self, old_i, old_j, new_i, new_j):
 		if self.board[old_i][old_j].decorated.__repr__() == "B":
 			is_accessible = self.is_accessible_by_B(old_i, old_j, new_i, new_j)
+		elif self.board[old_i][old_j].decorated.__repr__() == "R":
+			is_accessible = self.is_accessible_by_R(old_i, old_j, new_i, new_j)
 		else:
 			is_accessible = True
 		return self.is_legal_move_by_piece(old_i, old_j, new_i, new_j) \
@@ -100,7 +102,6 @@ class Board():
 	def is_accessible_by_B(self, old_i, old_j, new_i, new_j):
 		i, j = old_i + 1, old_j + 1
 		while i < new_i and j < new_j:
-			print i, j
 			if self.is_empty(i, j):
 				i += 1
 				j += 1
@@ -133,5 +134,36 @@ class Board():
 				return False
 		return True
 	
+	def is_accessible_by_R(self, old_i, old_j, new_i, new_j):
+		i, j = old_i + 1, old_j
+		while i < new_i:
+			if self.is_empty(i, j):
+				i += 1
+				continue
+			else: 
+				return False
+		i, j = old_i,  old_j - 1
+		while j > new_j:
+			if self.is_empty(i, j):
+				j -= 1
+				continue
+			else:
+				return False
+		i, j = old_i - 1, old_j
+		while i > new_i:
+			if self.is_empty(i, j):
+				i -= 1
+				continue
+			else:
+				return False
+		i, j = old_i, old_j + 1
+		while j < new_j:
+			if self.is_empty(i, j):
+				j += 1
+				continue
+			else:
+				return False
+		return True
+		
 	def is_empty(self, i, j):
 		return self.board[i][j] == None 
