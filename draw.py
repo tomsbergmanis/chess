@@ -63,20 +63,24 @@ def on_click(i,j,event):
 			prev_i = i
 			prev_j = j
 	else:
-		color = "white" if (i+j)%2 else "gray55"
-		L = getArt(board.board[prev_i][prev_j], i, j)
-		L.grid(row=7-i,column=j)
-		L.bind('<Button-1>',lambda e,i=i,j=j: on_click(i,j,e))
-		board.move_piece(prev_i, prev_j, i,j)
-		if i != prev_i or j != prev_j:
-			color = "white" if (prev_i+prev_j)%2 else "gray55"
-			L1 = getArt(board.board[prev_i][prev_j], prev_i, prev_j)
-			L1.grid(row=7-prev_i,column=prev_j)
-			L1.bind('<Button-1>',lambda e,prev_i=prev_i,prev_j=prev_j: \
-					on_click(prev_i,prev_j,e))
+		if board.is_legal_move(prev_i, prev_j, i, j):
+			color = "white" if (i+j)%2 else "gray55"
+			L = getArt(board.board[prev_i][prev_j], i, j)
+			L.grid(row=7-i,column=j)
+			L.bind('<Button-1>', lambda e, i = i, j = j: on_click(i, j, e))
+			board.move_piece(prev_i, prev_j, i, j)
+			
+			if i != prev_i or j != prev_j:
+				color = "white" if (prev_i + prev_j) % 2 else "gray55"
+				L1 = getArt(board.board[prev_i][prev_j], prev_i, prev_j)
+				L1.grid(row = 7 - prev_i, column = prev_j)
+				L1.bind('<Button-1>',lambda e, prev_i = prev_i, prev_j = prev_j: \
+						on_click(prev_i, prev_j, e))
+						
 		prev_i = -1
 		prev_j = -1
-	
+		
+			
 		
 if __name__ == "__main__":
 	global prev_i 

@@ -57,9 +57,28 @@ class Board():
 		self.board[6][7] = ColoredChessPiece("B", piece.Pawn(8,7,7))
 		
 	def move_piece(self, old_i, old_j, new_i, new_j):
-		self.board[new_i][new_j] = self.board[old_i][old_j]
-		if old_i != new_i or old_j != new_j:
+		if self.is_legal_move(old_i, old_j, new_i, new_j):
+			self.board[new_i][new_j] = self.board[old_i][old_j]
+			#have to add one due to difference in representations
+			self.board[new_i][new_j].decorated.move_piece( new_j+1, new_i+1) 
 			self.board[old_i][old_j] = None
-
+	
+	def is_legal_move(self, old_i, old_j, new_i, new_j):
+		return self.is_legal_move_by_piece(old_i, old_j, new_i, new_j)
+	
+	def is_legal_move_by_piece(self, old_i, old_j, new_i, new_j):
+		if old_i != new_i or old_j != new_j:
+			#have to add one due to difference in representations
+			move_to = (new_j+1, new_i+1)
+			if self.board[old_i][old_j] != None:
+				if move_to in self.board[old_i][old_j].decorated.move_options():
+					return True
+				else:
+					return False
+			else:
+				return False	
+		else: 
+			return False
+			
 	def is_empty(self, i, j):
 		return self.board[i][j] == None 
