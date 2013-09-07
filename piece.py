@@ -41,8 +41,8 @@ class Pawn(ChessPiece):
 			
 		# move 1 forth
 		moves.append((self.pos_x,self.pos_y + 1*dir))
-		# move 2 forth from initial pos
 		
+		# move 2 forth from initial pos
 		if self.pos_y == self.initial_y:
 			moves.append((self.pos_x,self.pos_y + 2*dir))
 		
@@ -51,7 +51,7 @@ class Pawn(ChessPiece):
 			moves.append((self.pos_x + 1, self.pos_y + 1*dir))
 			
 		# take piece on the left
-		if self.pos_x - 1 < BMIN:
+		if self.pos_x - 1 > BMIN:
 			moves.append((self.pos_x - 1, self.pos_y + 1*dir))
 			
 		return moves

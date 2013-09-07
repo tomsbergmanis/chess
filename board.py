@@ -78,6 +78,7 @@ class Board():
 		if old_i != new_i or old_j != new_j:
 			#have to add one due to difference in representations
 			move_to = (new_j+1, new_i+1)
+			print self.board[old_i][old_j].decorated.move_options()
 			if self.board[old_i][old_j] != None:
 				if move_to in self.board[old_i][old_j].decorated.move_options():
 					return True
