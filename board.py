@@ -64,8 +64,13 @@ class Board():
 			self.board[old_i][old_j] = None
 	
 	def is_legal_move(self, old_i, old_j, new_i, new_j):
+		if self.board[old_i][old_j].decorated.__repr__() == "B":
+			is_accessible = self.is_accessible_by_B(old_i, old_j, new_i, new_j)
+		else:
+			is_accessible = True
 		return self.is_legal_move_by_piece(old_i, old_j, new_i, new_j) \
-				and self.is_target_sq_occupiable(old_i, old_j, new_i, new_j)
+				and self.is_target_sq_occupiable(old_i, old_j, new_i, new_j) \
+				and is_accessible
 	
 	def is_legal_move_by_piece(self, old_i, old_j, new_i, new_j):
 		if old_i != new_i or old_j != new_j:
@@ -92,5 +97,42 @@ class Board():
 			else:
 				return False
 			
+	def is_accessible_by_B(self, old_i, old_j, new_i, new_j):
+		i, j = old_i + 1, old_j + 1
+		while i <= new_i and j <= new_j:
+			print i, j
+			if self.is_target_sq_occupiable(old_i,old_j, i, j):
+			
+				i += 1
+				j += 1
+				continue
+			else: 
+				return False
+		i, j = old_i + 1, old_j - 1
+		while i <= new_i and j >= new_j:
+			if self.is_target_sq_occupiable(old_i,old_j, i, j):
+				i += 1
+				j -= 1
+				continue
+			else:
+				return False
+		i, j = old_i - 1, old_j + 1
+		while i >= new_i and j <= new_j:
+			if self.is_target_sq_occupiable(old_i,old_j, i, j):
+				i -= 1
+				j += 1
+				continue
+			else:
+				return False
+		i, j = old_i - 1, old_j - 1
+		while i >= new_i and j >= new_j:
+			if self.is_target_sq_occupiable(old_i,old_j, i, j):
+				i -= 1
+				j -= 1
+				continue
+			else:
+				return False
+		return True
+	
 	def is_empty(self, i, j):
 		return self.board[i][j] == None 
