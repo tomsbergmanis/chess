@@ -64,7 +64,8 @@ class Board():
 			self.board[old_i][old_j] = None
 	
 	def is_legal_move(self, old_i, old_j, new_i, new_j):
-		return self.is_legal_move_by_piece(old_i, old_j, new_i, new_j)
+		return self.is_legal_move_by_piece(old_i, old_j, new_i, new_j) \
+				and self.is_target_sq_occupiable(old_i, old_j, new_i, new_j)
 	
 	def is_legal_move_by_piece(self, old_i, old_j, new_i, new_j):
 		if old_i != new_i or old_j != new_j:
@@ -79,6 +80,17 @@ class Board():
 				return False	
 		else: 
 			return False
+			
+	def is_target_sq_occupiable(self, old_i, old_j, new_i, new_j):
+		if self.board[new_i][new_j] == None:
+			return True
+		else:
+			piece_colour = self.board[old_i][ old_j].colour
+			target_colour = self.board[new_i][ new_j].colour
+			if piece_colour != target_colour:
+				return True
+			else:
+				return False
 			
 	def is_empty(self, i, j):
 		return self.board[i][j] == None 
