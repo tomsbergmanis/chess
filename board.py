@@ -99,34 +99,33 @@ class Board():
 			
 	def is_accessible_by_B(self, old_i, old_j, new_i, new_j):
 		i, j = old_i + 1, old_j + 1
-		while i <= new_i and j <= new_j:
+		while i < new_i and j < new_j:
 			print i, j
-			if self.is_target_sq_occupiable(old_i,old_j, i, j):
-			
+			if self.is_empty(i, j):
 				i += 1
 				j += 1
 				continue
 			else: 
 				return False
 		i, j = old_i + 1, old_j - 1
-		while i <= new_i and j >= new_j:
-			if self.is_target_sq_occupiable(old_i,old_j, i, j):
+		while i < new_i and j > new_j:
+			if self.is_empty(i, j):
 				i += 1
 				j -= 1
 				continue
 			else:
 				return False
 		i, j = old_i - 1, old_j + 1
-		while i >= new_i and j <= new_j:
-			if self.is_target_sq_occupiable(old_i,old_j, i, j):
+		while i > new_i and j < new_j:
+			if self.is_empty(i, j):
 				i -= 1
 				j += 1
 				continue
 			else:
 				return False
 		i, j = old_i - 1, old_j - 1
-		while i >= new_i and j >= new_j:
-			if self.is_target_sq_occupiable(old_i,old_j, i, j):
+		while i > new_i and j > new_j:
+			if self.is_empty(i, j):
 				i -= 1
 				j -= 1
 				continue
