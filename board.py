@@ -68,6 +68,8 @@ class Board():
 			is_accessible = self.is_accessible_by_B(old_i, old_j, new_i, new_j)
 		elif self.board[old_i][old_j].decorated.__repr__() == "R":
 			is_accessible = self.is_accessible_by_R(old_i, old_j, new_i, new_j)
+		elif self.board[old_i][old_j].decorated.__repr__() == "Q":
+			is_accessible = self.is_accessible_by_Q(old_i, old_j, new_i, new_j)
 		else:
 			is_accessible = True
 		return self.is_legal_move_by_piece(old_i, old_j, new_i, new_j) \
@@ -78,7 +80,6 @@ class Board():
 		if old_i != new_i or old_j != new_j:
 			#have to add one due to difference in representations
 			move_to = (new_j+1, new_i+1)
-			print self.board[old_i][old_j].decorated.move_options()
 			if self.board[old_i][old_j] != None:
 				if move_to in self.board[old_i][old_j].decorated.move_options():
 					return True
@@ -165,6 +166,12 @@ class Board():
 			else:
 				return False
 		return True
+		
+	def is_accessible_by_Q(self, old_i, old_j, new_i, new_j):
+		if old_i == new_i or old_j == new_j:
+			return self.is_accessible_by_R(old_i, old_j, new_i, new_j)
+		else: 
+			return self.is_accessible_by_B(old_i, old_j, new_i, new_j)
 		
 	def is_empty(self, i, j):
 		return self.board[i][j] == None 
