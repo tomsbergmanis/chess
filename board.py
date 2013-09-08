@@ -45,7 +45,7 @@ class Board():
 		self.board[7][5] = ColoredChessPiece("B", piece.Bishop(6,8))
 				
 		self.board[7][3] = ColoredChessPiece("B", piece.Queen(4,8))
-		self.board[7][4] = ColoredChessPiece("B", piece.King(5,1,5,8))
+		self.board[7][4] = ColoredChessPiece("B", piece.King(5,8,5,8))
 		
 		self.board[6][0] = ColoredChessPiece("B", piece.Pawn(1,7,7))
 		self.board[6][1] = ColoredChessPiece("B", piece.Pawn(2,7,7))
@@ -109,6 +109,7 @@ class Board():
 			#have to add one due to difference in representations
 			move_to = (new_j+1, new_i+1)
 			if self.board[old_i][old_j] != None:
+				print self.board[old_i][old_j].decorated.move_options()
 				if move_to in self.board[old_i][old_j].decorated.move_options():
 					return True
 				else:
