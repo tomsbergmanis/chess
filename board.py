@@ -56,12 +56,40 @@ class Board():
 		self.board[6][6] = ColoredChessPiece("B", piece.Pawn(7,7,7))
 		self.board[6][7] = ColoredChessPiece("B", piece.Pawn(8,7,7))
 		
+		self.__white_king_moved__ = False
+		self.__black_king_moved__ = False
+		self.__white_a_rook_moved__ = False
+		self.__white_e_rook_moved__ = False
+		self.__black_a_rook_moved__ = False
+		self.__black_e_rook_moved__ = False
+		
+		
 	def move_piece(self, old_i, old_j, new_i, new_j):
 		if self.is_legal_move(old_i, old_j, new_i, new_j):
 			self.board[new_i][new_j] = self.board[old_i][old_j]
 			#have to add one due to difference in representations
 			self.board[new_i][new_j].decorated.move_piece( new_j+1, new_i+1) 
 			self.board[old_i][old_j] = None
+			self.__update_board__(old_i, old_j, new_i, new_j)
+			
+			
+	def __update_board__(self, old_i, old_j, new_i, new_j):
+		if self.board[new_i][new_j].decorated.__repr__() == "K":
+			if self.board[new_i][new_j].colour == "W":
+				self.__white_king_moved__ = True
+			else:
+				self.__black_king_moved__ = True
+		elif self.board[new_i][new_j].decorated.__repr__() == "R":
+			if self.board[new_i][new_j].colour == "W":
+				if old_i == 0 and old_j == 0:
+					self.__white_a_rook_moved__ = True
+				elif old_i == 0  and old_j == 7:
+					self.__white_e_rook_moved__ = True
+			else:
+				if old_i == 7 and old_j == 0:
+					self.__black_a_rook_moved__ = True
+				elif old_i == 7  and old_j == 7:
+					self.__black_e_rook_moved__ = True
 	
 	def is_legal_move(self, old_i, old_j, new_i, new_j):
 		if self.board[old_i][old_j].decorated.__repr__() == "B":
