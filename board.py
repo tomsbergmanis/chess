@@ -106,6 +106,8 @@ class Board():
 			is_accessible = self.is_accessible_by_Q(old_i, old_j, new_i, new_j)
 		elif self.board[old_i][old_j].decorated.__repr__() == "K":
 			is_accessible = self.is_accessible_by_K(old_i, old_j, new_i, new_j)
+		elif self.board[old_i][old_j].decorated.__repr__() == "P":
+			is_accessible = self.is_accessible_by_P(old_i, old_j, new_i, new_j)
 		else:
 			is_accessible = True
 		
@@ -217,7 +219,22 @@ class Board():
 		self.__place_piece__( new_i, new_j, old_i, old_j)
 		return answer
 	
-		
+	def is_accessible_by_P(self, old_i, old_j, new_i, new_j):
+		if old_j == new_j:
+			if self.is_empty(new_i, new_j):
+				return True
+			else:
+				return False
+		else:
+			if not self.is_empty(new_i, new_j):
+				op = self.__other_colour__(old_i, old_j)
+				if self.board[new_i][new_j].colour == op:
+					return True
+				else:
+					return False
+			else:
+				return False
+	
 	def is_attacked(self, sq_i, sq_j, op):
 		
 		for i in range(8):
