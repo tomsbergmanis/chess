@@ -1,7 +1,7 @@
 import piece
 
 class ColoredChessPiece():
-
+	
 	def __init__ (self, colour, decorated):
 		self.colour = colour
 		self.decorated = decorated
@@ -66,13 +66,19 @@ class Board():
 		
 	def move_piece(self, old_i, old_j, new_i, new_j):
 		if self.is_legal_move(old_i, old_j, new_i, new_j):
+			#print old_i, old_j, new_i, new_j
 			self.board[new_i][new_j] = self.board[old_i][old_j]
 			#have to add one due to difference in representations
 			self.board[new_i][new_j].decorated.move_piece( new_j+1, new_i+1) 
 			self.board[old_i][old_j] = None
 			self.__update_board__(old_i, old_j, new_i, new_j)
 			
-			
+	def __place_piece__(self, old_i, old_j, new_i, new_j):
+		self.board[new_i][new_j] = self.board[old_i][old_j]
+		#have to add one due to difference in representations
+		self.board[new_i][new_j].decorated.move_piece( new_j+1, new_i+1) 
+		self.board[old_i][old_j] = None
+	
 	def __update_board__(self, old_i, old_j, new_i, new_j):
 		if self.board[new_i][new_j].decorated.__repr__() == "K":
 			if self.board[new_i][new_j].colour == "W":
@@ -98,8 +104,11 @@ class Board():
 			is_accessible = self.is_accessible_by_R(old_i, old_j, new_i, new_j)
 		elif self.board[old_i][old_j].decorated.__repr__() == "Q":
 			is_accessible = self.is_accessible_by_Q(old_i, old_j, new_i, new_j)
+		elif self.board[old_i][old_j].decorated.__repr__() == "K":
+			is_accessible = self.is_accessible_by_K(old_i, old_j, new_i, new_j)
 		else:
 			is_accessible = True
+		
 		return self.is_legal_move_by_piece(old_i, old_j, new_i, new_j) \
 				and self.is_target_sq_occupiable(old_i, old_j, new_i, new_j) \
 				and is_accessible
@@ -108,8 +117,7 @@ class Board():
 		if old_i != new_i or old_j != new_j:
 			#have to add one due to difference in representations
 			move_to = (new_j+1, new_i+1)
-			if self.board[old_i][old_j] != None:
-				print self.board[old_i][old_j].decorated.move_options()
+			if not self.is_empty(old_i, old_j):
 				if move_to in self.board[old_i][old_j].decorated.move_options():
 					return True
 				else:
@@ -120,7 +128,7 @@ class Board():
 			return False
 			
 	def is_target_sq_occupiable(self, old_i, old_j, new_i, new_j):
-		if self.board[new_i][new_j] == None:
+		if self.is_empty(new_i, new_j):
 			return True
 		else:
 			piece_colour = self.board[old_i][ old_j].colour
@@ -202,5 +210,39 @@ class Board():
 		else: 
 			return self.is_accessible_by_B(old_i, old_j, new_i, new_j)
 		
+	def is_accessible_by_K(self, old_i, old_j, new_i, new_j):
+		op_colour = self.__other_colour__(old_i, old_j)
+		self.__place_piece__(old_i, old_j, new_i, new_j)
+		answer =  not self.is_attacked(new_i, new_j, op_colour)
+		self.__place_piece__( new_i, new_j, old_i, old_j)
+		return answer
+	
+		
+	def is_attacked(self, sq_i, sq_j, op):
+		
+		for i in range(8):
+			for j in range(8):
+				if self.is_empty(i, j):
+					continue
+				else:
+					if self.board[i][j].colour == op:
+						if self.board[i][j].decorated.__repr__() == "K":
+							#have to add one due to difference in representations
+							if (sq_j + 1, sq_i + 1 ) in self.board[i][j].decorated.move_options():
+								return True
+						else:
+							if self.is_legal_move(i, j, sq_i, sq_j):
+								return True
+		return False
+		
+	def __other_colour__(self, i, j):
+		colour = self.board[i][j].colour
+		if colour == "W":
+			return "B"
+		else:
+			return "W"
+	def __is_square__(self, i, j):
+		return i < 8 and i > -1 and j < 8 and j > -1
+		
 	def is_empty(self, i, j):
-		return self.board[i][j] == None 
+		return self.board[i][j].__repr__() == 'None'
