@@ -213,6 +213,59 @@ class Board():
 			return self.is_accessible_by_B(old_i, old_j, new_i, new_j)
 		
 	def is_accessible_by_K(self, old_i, old_j, new_i, new_j):
+	
+		colour = self.board[old_i][old_j].colour
+		if colour == "W":
+			if old_j == new_j - 2:
+				if self.__white_king_moved__ == False and \
+					self.__white_e_rook_moved__ == False:
+					op_colour = self.__other_colour__(old_i, old_j)
+					self.__place_piece__(old_i, old_j, old_i, old_j + 1)
+					answer1 =  not self.is_attacked(old_i, old_j + 1, op_colour)
+					self.__place_piece__(old_i, old_j + 1, old_i, old_j + 2)
+					answer2 =  not self.is_attacked(old_i, old_j + 2, op_colour)
+					self.__place_piece__(old_i, old_j + 2, old_i, old_j)
+					return answer1 and answer2
+				else:
+					return False
+			if old_j == new_j + 2:
+				if self.__white_king_moved__ == False and \
+					self.__white_a_rook_moved__ == False:
+					op_colour = self.__other_colour__(old_i, old_j)
+					self.__place_piece__(old_i, old_j, old_i, old_j - 1)
+					answer1 =  not self.is_attacked(old_i, old_j - 1, op_colour)
+					self.__place_piece__(old_i, old_j - 1, old_i, old_j - 2)
+					answer2 =  not self.is_attacked(old_i, old_j - 2, op_colour)
+					self.__place_piece__(old_i, old_j - 2, old_i, old_j)
+					return answer1 and answer2
+				else:
+					return False
+		else:
+			if old_j == new_j - 2:
+				if self.__black_king_moved__ == False and \
+					self.__black_e_rook_moved__ == False:
+					op_colour = self.__other_colour__(old_i, old_j)
+					self.__place_piece__(old_i, old_j, old_i, old_j + 1)
+					answer1 =  not self.is_attacked(old_i, old_j + 1, op_colour)
+					self.__place_piece__(old_i, old_j + 1, old_i, old_j + 2)
+					answer2 =  not self.is_attacked(old_i, old_j + 2, op_colour)
+					self.__place_piece__(old_i, old_j + 2, old_i, old_j)
+					return answer1 and answer2
+				else:
+					return False
+			if old_j == new_j + 2:
+				if self.__black_king_moved__ == False and \
+					self.__black_a_rook_moved__ == False:
+					op_colour = self.__other_colour__(old_i, old_j)
+					self.__place_piece__(old_i, old_j, old_i, old_j - 1)
+					answer1 =  not self.is_attacked(old_i, old_j - 1, op_colour)
+					self.__place_piece__(old_i, old_j - 1, old_i, old_j - 2)
+					answer2 =  not self.is_attacked(old_i, old_j - 2, op_colour)
+					self.__place_piece__(old_i, old_j - 2, old_i, old_j)
+					return answer1 and answer2
+				else:
+					return False
+			
 		op_colour = self.__other_colour__(old_i, old_j)
 		self.__place_piece__(old_i, old_j, new_i, new_j)
 		answer =  not self.is_attacked(new_i, new_j, op_colour)
@@ -251,7 +304,15 @@ class Board():
 							if self.is_legal_move(i, j, sq_i, sq_j):
 								return True
 		return False
-		
+	
+	def is_casteling(self, prev_i, prev_j, i, j):
+		if self.board[i][j].decorated.__repr__() == "K":
+			if abs(prev_j - j) == 2:
+				return True
+		else:
+			return False
+	
+	
 	def __other_colour__(self, i, j):
 		colour = self.board[i][j].colour
 		if colour == "W":
@@ -263,3 +324,16 @@ class Board():
 		
 	def is_empty(self, i, j):
 		return self.board[i][j].__repr__() == 'None'
+	
+	def set_rook_moved(self, colour, flank):
+		if colour == 'W':
+			if flank == 'e':
+				self.__white_e_rook_moved=True
+			else:
+				self.__white_a_rook_moved = False
+		else:
+			if flank == 'e':
+				self.__white_e_rook_moved=True
+			else:
+				self.__white_a_rook_moved = False
+		

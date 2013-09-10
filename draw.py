@@ -76,7 +76,33 @@ def on_click(i,j,event):
 				L1.grid(row = 7 - prev_i, column = prev_j)
 				L1.bind('<Button-1>',lambda e, prev_i = prev_i, prev_j = prev_j: \
 						on_click(prev_i, prev_j, e))
-						
+			
+			if board.is_casteling(prev_i, prev_j, i, j):
+				if prev_j - j == -2:
+					board.set_rook_moved(board.board[i][j].colour, 'e')
+					prev_i = i
+					prev_j = j + 1
+					i = i
+					j = j - 1
+					
+				else:
+					board.set_rook_moved(board.board[i][j].colour, 'a')
+					prev_i = i
+					prev_j = j -2
+					i = i
+					j = j + 1
+				color = "white" if (i+j)%2 else "gray55"
+				L3 = getArt(board.board[prev_i][prev_j], i, j)
+				L3.grid(row=7-i,column=j)
+				L3.bind('<Button-1>', lambda e, i = i, j = j: on_click(i, j, e))
+				board.__place_piece__(prev_i, prev_j, i, j)
+			
+				color = "white" if (prev_i + prev_j) % 2 else "gray55"
+				L4 = getArt(board.board[prev_i][prev_j], prev_i, prev_j)
+				L4.grid(row = 7 - prev_i, column = prev_j)
+				L4.bind('<Button-1>',lambda e, prev_i = prev_i, prev_j = prev_j: \
+							on_click(prev_i, prev_j, e))
+							
 		prev_i = -1
 		prev_j = -1
 		
