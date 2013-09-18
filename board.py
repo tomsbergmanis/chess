@@ -1,5 +1,8 @@
 import piece
 
+EN_PASSANTLINE_W = 4
+EN_PASSANTLINE_B = 3
+
 class ColoredChessPiece():
 	
 	def __init__ (self, colour, decorated):
@@ -63,6 +66,8 @@ class Board():
 		self.__black_a_rook_moved__ = False
 		self.__black_e_rook_moved__ = False
 		
+		self.__en_passant_possible__ = -1
+		
 		
 	def move_piece(self, old_i, old_j, new_i, new_j):
 		if self.is_legal_move(old_i, old_j, new_i, new_j):
@@ -78,6 +83,9 @@ class Board():
 		#have to add one due to difference in representations
 		self.board[new_i][new_j].decorated.move_piece( new_j+1, new_i+1) 
 		self.board[old_i][old_j] = None
+		
+	def remove_piece(self, i,j):
+		self.board[i][j] = None
 	
 	def __update_board__(self, old_i, old_j, new_i, new_j):
 		if self.board[new_i][new_j].decorated.__repr__() == "K":
@@ -96,6 +104,12 @@ class Board():
 					self.__black_a_rook_moved__ = True
 				elif old_i == 7  and old_j == 7:
 					self.__black_e_rook_moved__ = True
+		elif self.board[new_i][new_j].decorated.__repr__() == "P":
+			if old_i == 1 or old_i == 6:
+				if new_i == 3 or new_i == 4:
+					self.__en_passant_possible__ = new_j
+		if not self.board[new_i][new_j].decorated.__repr__() == "P":
+			self.__en_passant_possible__ = -1
 	
 	def is_legal_move(self, old_i, old_j, new_i, new_j):
 		if self.board[old_i][old_j].decorated.__repr__() == "B":
@@ -285,6 +299,15 @@ class Board():
 					return True
 				else:
 					return False
+			elif self.__en_passant_possible__ >= 0:
+				if self.board[old_i][old_j].colour == 'W':
+					if old_i == EN_PASSANTLINE_W and \
+						self.__en_passant_possible__ == new_j:
+						return True
+				else:
+					if old_i == EN_PASSANTLINE_B and \
+						self.__en_passant_possible__ == new_j:
+						return True
 			else:
 				return False
 	
@@ -298,7 +321,8 @@ class Board():
 					if self.board[i][j].colour == op:
 						if self.board[i][j].decorated.__repr__() == "K":
 							#have to add one due to difference in representations
-							if (sq_j + 1, sq_i + 1 ) in self.board[i][j].decorated.move_options():
+							if (sq_j + 1, sq_i + 1 ) in \
+								self.board[i][j].decorated.move_options():
 								return True
 						else:
 							if self.is_legal_move(i, j, sq_i, sq_j):
@@ -311,7 +335,14 @@ class Board():
 				return True
 		else:
 			return False
-	
+			
+	def is_empasant(self, prev_i, prev_j, i, j):
+		if self.board[prev_i][prev_j].decorated.__repr__() == "P":
+			if abs(prev_j - j) == 1 and abs(prev_i - i) == 1 \
+				and self.is_empty(i, j):
+				return True
+		else:
+			return False
 	
 	def __other_colour__(self, i, j):
 		colour = self.board[i][j].colour

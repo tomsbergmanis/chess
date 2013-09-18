@@ -63,6 +63,7 @@ def on_click(i,j,event):
 			prev_i = i
 			prev_j = j
 	else:
+		is_empasant = board.is_empasant(prev_i, prev_j, i, j)
 		if board.is_legal_move(prev_i, prev_j, i, j):
 			color = "white" if (i+j)%2 else "gray55"
 			L = getArt(board.board[prev_i][prev_j], i, j)
@@ -102,6 +103,15 @@ def on_click(i,j,event):
 				L4.grid(row = 7 - prev_i, column = prev_j)
 				L4.bind('<Button-1>',lambda e, prev_i = prev_i, prev_j = prev_j: \
 							on_click(prev_i, prev_j, e))
+			
+			if is_empasant:
+				i = prev_i
+				j = j
+				color = "white" if (i+j)%2 else "gray55"
+				L3 = tk.Label(root, image=empty, bg=color)
+				L3.grid(row=7-i,column=j)
+				L3.bind('<Button-1>', lambda e, i = i, j = j: on_click(i, j, e))
+				board.remove_piece(i,j)
 							
 		prev_i = -1
 		prev_j = -1
