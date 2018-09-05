@@ -1,1 +1,1 @@
-Chess board enforcing most of the chess rulles. 
+Chess board enforcing the chess rulles. 
